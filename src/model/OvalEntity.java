@@ -3,18 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bowman;
+package src.model;
 
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 
 /**
- *
  * @author a-haydar
  */
 public class OvalEntity extends Entity implements MouseListener, MouseMotionListener, KeyListener {
@@ -50,9 +45,9 @@ public class OvalEntity extends Entity implements MouseListener, MouseMotionList
         g2d.drawOval((int) x, (int) y, width, height);
         // return to old transformation
         g2d.setTransform(original);
-        
+
         if (dragged) {
-            g2d.drawString("["+x+","+y+"]", 0, 15);
+            g2d.drawString("[" + x + "," + y + "]", 0, 15);
         } else {
             g2d.drawString("Click and drag mouse up/down to change height or right/left to change width", 0, 15);
         }
@@ -67,7 +62,7 @@ public class OvalEntity extends Entity implements MouseListener, MouseMotionList
         } else {
             this.width = 600;
         }
-        this.x = this.x + (w-this.width)/2;
+        this.x = this.x + (w - this.width) / 2;
     }
 
     public void setHeight(int height) {
@@ -79,7 +74,7 @@ public class OvalEntity extends Entity implements MouseListener, MouseMotionList
         } else {
             this.height = 300;
         }
-        this.y = this.y + (h-this.height)/2;
+        this.y = this.y + (h - this.height) / 2;
     }
 
     @Override
@@ -127,7 +122,7 @@ public class OvalEntity extends Entity implements MouseListener, MouseMotionList
 
     @Override
     public void keyTyped(KeyEvent e) {
-     
+
     }
 
     @Override
@@ -148,12 +143,12 @@ public class OvalEntity extends Entity implements MouseListener, MouseMotionList
                 setWidth(width + 5);
                 break;
         }
-        
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        
+
     }
 
 }

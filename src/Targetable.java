@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bowman;
+package src;
 
 /**
- *
  * @author a-haydar
  */
 public interface Targetable {
     /**
-     * you cal this method when you try 
+     * you cal this method when you try
+     *
      * @param x
      * @param y
-     * @return true if point (x,y) is on target, false otherwise 
+     * @return true if point (x,y) is on target, false otherwise
      */
     public boolean hitTarget(int x, int y);
 }
