@@ -12,7 +12,7 @@ public class Bowman {
 
     private static final int WINDOW_WIDTH = 1000;
     private static final int WINDOW_HEIGHT = 600;
-    private static final String TITLE = "Bowman";
+    private static final String TITLE = "Bowman Game";
 
     /**
      * @param args the command line arguments
