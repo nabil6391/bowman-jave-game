@@ -1,8 +1,6 @@
 package src;
 
 
-import java.awt.*;
-
 /**
  * Main class responsible for starting the game
  *

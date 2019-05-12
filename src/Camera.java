@@ -14,7 +14,7 @@ public class Camera implements MouseListener, MouseMotionListener {
 
     float x, y;
     int width, height;
-    int ch, cw, bh, bw, margin; // camera controls
+    int cameraHeight, cameraWidth, barHeight, barWidth, margin; // camera controls
     Game game;
     // mouse
     boolean dragged = false;
@@ -25,13 +25,13 @@ public class Camera implements MouseListener, MouseMotionListener {
     public Camera(Game game, float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = width +10;
+        this.height = height + 10;
         this.game = game;
-        ch = 14;
-        cw = 10;
-        bh = 6;
-        bw = game.getGameWidth() / 10;
+        cameraHeight = 14;
+        cameraWidth = 10;
+        barHeight = 6;
+        barWidth = game.getGameWidth() / 10;
         margin = 10;
     }
 
@@ -76,14 +76,15 @@ public class Camera implements MouseListener, MouseMotionListener {
         }
         //check mouse
         if (pressed || dragged) {
-            x = (pressX - (width - bw - margin)) * 10;
+            x = (pressX - (width - barWidth - margin)) * 10;
         }
     }
 
     public void renderBarControl(Graphics2D g2d) {
         // draw x control
-        g2d.drawRect(width - bw - margin - 50, height - bh - margin, bw, bh);
-        g2d.fillRect((int) (width - bw - margin + x / 10), height - ch - margin + bh / 2 + 1, cw, ch);
+        g2d.drawRect(width - barWidth - margin - 50, height - barHeight - margin, barWidth, barHeight);
+
+        g2d.fillRect((int) (width - barWidth - margin + x / 10), height - cameraHeight - margin + barHeight / 2 + 1, cameraWidth, cameraHeight);
     }
 
     public void centerOn(Entity e) {
@@ -92,13 +93,13 @@ public class Camera implements MouseListener, MouseMotionListener {
     }
 
     private boolean onControl(int x, int y) {
-        return (x >= width - bw - margin + x / 10 && x <= width - bw - margin + x / 10 + cw)
-                && (y >= height - ch - margin + bh / 2 + 1 && y <= height - margin + bh / 2 + 1);
+        return (x >= width - barWidth - margin + x / 10 && x <= width - barWidth - margin + x / 10 + cameraWidth)
+                && (y >= height - cameraHeight - margin + barHeight / 2 + 1 && y <= height - margin + barHeight / 2 + 1);
     }
 
     private boolean onBar(int x, int y) {
-        return (x >= width - bw - margin - 50 && x <= width - margin)
-                && (y >= height - bh - margin && y <= height - margin);
+        return (x >= width - barWidth - margin - 50 && x <= width - margin)
+                && (y >= height - barHeight - margin && y <= height - margin);
     }
 
     @Override

@@ -14,13 +14,13 @@ import java.awt.*;
  */
 public abstract class Entity {
 
-   public final int BLACK = 1, RED = 2, GREEN = 3;
+    public final int BLACK = 1, RED = 2, GREEN = 3;
+    public boolean isArrow = false;
+    public int color;
     protected float x;
     protected float y;
     protected int width;
     protected int height;
-    public boolean isArrow = false;
-    public int color;
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;

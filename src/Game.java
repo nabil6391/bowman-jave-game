@@ -41,7 +41,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
     private Thread gameThread;
     // needed for drawing graphics
     private BufferStrategy bufferedGraphics;
-    private Graphics2D g2d;
+    private Graphics2D g;
     // Camera
     private Camera cam;
     // game entities
@@ -208,9 +208,9 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         try {
             img = ImageIO.read(new File("./skeleton" + imgNumber + ".gif"));
             imgNumber++;
-            g2d.drawImage(img, (int) cam.getX() + cam.getWidth() / 2, (int) cam.getY() + cam.getHeight() / 2, null);
-            g2d.setColor(Color.green);
-            g2d.fillRect((int) cam.getX() * 2, (int) cam.getY() / 2, 3000, 3000);
+            g.drawImage(img, (int) cam.getX() + cam.getWidth() / 2, (int) cam.getY() + cam.getHeight() / 2, null);
+            g.setColor(Color.green);
+            g.fillRect((int) cam.getX() * 2, (int) cam.getY() / 2, 3000, 3000);
             System.out.println("image drawn sucessfully at " + cam.getX() + " " + cam.getY());
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -229,50 +229,49 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
             createBufferStrategy(3);
             return; // exit to avoid graphic problems
         }
-        g2d = (Graphics2D) bufferedGraphics.getDrawGraphics();
+        g = (Graphics2D) bufferedGraphics.getDrawGraphics();
 
         // ---------------start drawing things----------------------
-        g2d.translate(-cam.getX(), -cam.getY()); // follow cam
+        g.translate(-cam.getX(), -cam.getY()); // follow cam
 
         // clear screen
-        g2d.clearRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
+        g.clearRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
 
         //draw white Background
-        g2d.setColor(new Color(1f, 1f, 1f, 1f));
-        g2d.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
-        g2d.setColor(Color.black);
+        g.setColor(new Color(1f, 1f, 1f, 1f));
+        g.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
 
+        g.setColor(Color.black);
         // draw land
-        g2d.drawLine((int) cam.getX(), groundYPosition, (int) (cam.getX() + cam.getWidth()), groundYPosition);
-        drawLand();
+        g.drawLine((int) cam.getX(), groundYPosition, (int) (cam.getX() + cam.getWidth()), groundYPosition);
 
         // renderBarControl entities
         for (int i = 0; i < entities.size(); i++) {
-            Entity get = entities.get(i);
-            if (visible(get)) {
-                get.render(g2d);
+            Entity getEntity = entities.get(i);
+            if (visible(getEntity)) {
+                getEntity.render(g);
             }
         }
 
         switch (state.peek()) {
             case STARTUP:
-                renderStartupMessage(g2d);
+                renderStartupMessage(g);
                 break;
             default:
                 break;
         }
 
-        g2d.translate(cam.getX(), cam.getY()); // restore after cam
+        g.translate(cam.getX(), cam.getY()); // restore after cam
 
         // renderBarControl information and controls
-        renderHUD(g2d);
-        cam.renderBarControl(g2d);
+        renderHUD(g);
+        cam.renderBarControl(g);
 
         // ---------------finished drawing things-------------------
 
         bufferedGraphics.show();
-        Toolkit.getDefaultToolkit().sync();
-        g2d.dispose();
+//        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
     }
 
     private void drawLand() {
@@ -324,7 +323,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         for (int i = 0; i < 20; i++) {
             xPos = (float) (Math.random() * (gameWidth - 400));
             yPos = (float) (Math.random() * (gameHeight / 2)) + 200;
-            //cw = (int) (Math.random()*(160)) + 40;
+            //cameraWidth = (int) (Math.random()*(160)) + 40;
             cw = (int) (Math.random() * (60)) + 15;
             //ch = (int) (Math.random()*(80)) + 20;
             ch = 2 * cw / 3;
@@ -401,13 +400,11 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
     private boolean visible(Entity entity) {
         // instead of checking if they are overlapping, check if they are not
         // if (entityRight < camLeft || entityLeft > camRight) return false
-        if (entity.getX() + entity.getWidth() < cam.getX()
-                || entity.getX() - entity.getWidth() > cam.getX() + cam.getWidth()) {
+        if (entity.getX() + entity.getWidth() < cam.getX() || entity.getX() - entity.getWidth() > cam.getX() + cam.getWidth()) {
             return false;
         }
         // if (entityBottom < camTop || entityTop > camBottom) return false or return true if not
-        return !(entity.getY() < cam.getY()
-                || entity.getY() - entity.getHeight() > cam.getY() + cam.getHeight());
+        return !(entity.getY() < cam.getY() || entity.getY() - entity.getHeight() > cam.getY() + cam.getHeight());
     }
 
     @Override
