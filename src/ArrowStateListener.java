@@ -7,7 +7,7 @@ package src;
  */
 
 /**
- * @author nabil
+ * @author nabil, mahi, shakil
  */
 public interface ArrowStateListener {
 

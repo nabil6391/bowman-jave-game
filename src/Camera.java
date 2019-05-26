@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * @author nabil
+ * @author nabil, mahi, shakil
  */
 public class Camera implements MouseListener, MouseMotionListener {
 

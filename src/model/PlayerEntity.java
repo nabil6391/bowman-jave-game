@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 /**
- * @author nabil
+ * @author nabil, mahi, shakil
  */
 public class PlayerEntity extends Entity implements Targetable {
 

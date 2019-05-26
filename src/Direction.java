@@ -6,7 +6,7 @@
 package src;
 
 /**
- * @author nabil
+ * @author nabil, mahi, shakil
  */
 public enum Direction {
     LEFT, RIGHT

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * Game class will be the main class that contain the game and everything
  * related to it. This will run in its own thread.
  *
- * @author nabil
+ * @author nabil, mahi, shakil
  */
 public class Game extends Canvas implements Runnable, MouseListener, MouseMotionListener, ArrowStateListener {
 

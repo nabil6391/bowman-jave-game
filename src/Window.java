@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * This class just creates the main window for the game
  *
- * @author nabil
+ * @author nabil, mahi, shakil
  */
 public class Window {
 

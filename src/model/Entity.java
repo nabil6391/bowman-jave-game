@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * Root class of all entities with common functionality.
  *
- * @author nabil
+ * @author nabil, mahi, shakil
  */
 public abstract class Entity {
 
