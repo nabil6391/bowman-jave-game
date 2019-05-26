@@ -81,5 +81,4 @@ public class CloudEntity extends Entity {
         g2d.fillPolygon(xPoints, yPoints, 13);
         g2d.setColor(temp);
     }
-
 }

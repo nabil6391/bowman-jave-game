@@ -1,6 +1,5 @@
 package src;
 
-
 /**
  * Main class responsible for starting the game
  *
@@ -23,5 +22,4 @@ public class Bowman {
         // start game
         game.start();
     }
-
 }

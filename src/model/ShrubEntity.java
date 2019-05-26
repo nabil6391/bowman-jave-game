@@ -63,5 +63,4 @@ public class ShrubEntity extends Entity {
         g2d.fillPolygon(xPoints, yPoints, 9);
         g2d.setColor(Color.black);
     }
-
 }

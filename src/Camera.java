@@ -14,9 +14,9 @@ public class Camera implements MouseListener, MouseMotionListener {
 
     float x, y;
     int width, height;
-    int cameraHeight, cameraWidth, barHeight, barWidth, margin; // camera controls
+    int cameraHeight, cameraWidth, barHeight, barWidth, margin; // for camera controls bar
     Game game;
-    // mouse
+    // for get the mouse motion or pressed event
     boolean dragged = false;
     boolean pressed = false;
     int pressX, pastPressX;
@@ -32,7 +32,7 @@ public class Camera implements MouseListener, MouseMotionListener {
         cameraWidth = 10;
         barHeight = 6;
         barWidth = game.getGameWidth() / 10;
-        margin = 10;
+        margin = 20;
     }
 
     public float getX() {
@@ -98,7 +98,7 @@ public class Camera implements MouseListener, MouseMotionListener {
     }
 
     private boolean onBar(int x, int y) {
-        return (x >= width - barWidth - margin - 50 && x <= width - margin)
+        return (x >= width - barWidth - margin -50  && x <= width - margin -50)
                 && (y >= height - barHeight - margin && y <= height - margin);
     }
 

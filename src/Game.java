@@ -3,12 +3,15 @@ package src;
 import src.model.*;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +57,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
     private int secondsSoFar = 0;
     private int mouseX;
     private int mouseY;
+    private boolean gameover = false;
 
     public Game(int width, int height) {
         gameWidth = 5000;
@@ -156,14 +160,20 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
                 //for statistics
                 frames++;
             }
-            render();
+
+            try {
+                render();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
             // set lastTime for next calculation
             lastTime = currentTime;
 
             //TODO find a better way to reduce CPU load
             try {
-                Thread.sleep(1);
+                Thread.sleep(10);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -195,6 +205,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
                 cam.tick(currentArrow);
                 break;
             case GAMEOVER:
+                renderGameoverMessage(g);
                 break;
             default:
                 break;
@@ -222,7 +233,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
      * the renderBarControl() method is where you do all your drawing to the
      * screen.
      */
-    private void render() {
+    private void render() throws IOException {
         // get accelerated graphics
         bufferedGraphics = getBufferStrategy();
         if (bufferedGraphics == null) {
@@ -238,8 +249,9 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         g.clearRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
 
         //draw white Background
-        g.setColor(new Color(1f, 1f, 1f, 1f));
-        g.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
+
+//        g.setColor(new Color(1f, 1f, 1f, 1f));
+//        g.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
 
         g.setColor(Color.black);
         // draw land
@@ -256,6 +268,9 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         switch (state.peek()) {
             case STARTUP:
                 renderStartupMessage(g);
+                break;
+            case GAMEOVER:
+                renderGameoverMessage(g);
                 break;
             default:
                 break;
@@ -282,12 +297,33 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         Color c = g2d.getColor();
         g2d.setColor(new Color(0.2f, 0.2f, 0.2f, 0.5f));
         g2d.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
+        g2d.setBackground(Color.white);
         g2d.setColor(c);
-        g2d.drawString("Assalamu Alaikum. Click to start Game", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
+        g2d.drawString("Assalamu Alaikum. Click any key  to start Game", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
+
+//        JFrame background = new JFrame(); // create window
+//        // background image add to the window jframe
+//        JPanel p = new JPanel();
+//        ImageIcon i = new ImageIcon("D:/personal/programming/java/Bowman/src/sample.jpg");
+//        JLabel l = new JLabel();
+//        l.setIcon(i);
+//        p.add(l);
+//        background.add(p);
+//        background.setVisible(true);
+    }
+
+    private void renderGameoverMessage(Graphics2D g2d) {
+        Color c = g2d.getColor();
+        g2d.setColor(new Color(0.2f, 0.2f, 0.2f, 0.5f));
+        g2d.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
+        g2d.setColor(c);
+        g2d.drawString("Game Over", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
     }
 
     private void init() {
         entities = new ArrayList<>();
+
+
 
         initShrubs();
         initClouds();
@@ -433,16 +469,16 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
     }
 
     public void makeThePreviouseArrowGreen() {//make the last arrow GREEN and make the previouse one BLACK
-        Entity lastEntity, peforeLastEntity;
+        Entity lastEntity, beforeLastEntity;
         if (entities.size() > 2) {
             lastEntity = entities.get(entities.size() - 2);
-            peforeLastEntity = entities.get(entities.size() - 3);
+            beforeLastEntity = entities.get(entities.size() - 3);
             if (lastEntity.isArrow) {
                 if (lastEntity.color != lastEntity.RED) {//if this arrow didnt hit the target then change its color
                     lastEntity.color = lastEntity.GREEN;
                 }
-                if (peforeLastEntity.color != peforeLastEntity.RED)//make the prevoiuse one to its original color if it didnt hit target
-                    peforeLastEntity.color = peforeLastEntity.BLACK;
+                if (beforeLastEntity.color != beforeLastEntity.RED)//make the prevoiuse one to its original color if it didnt hit target
+                    beforeLastEntity.color = beforeLastEntity.BLACK;
 
             }
         }
