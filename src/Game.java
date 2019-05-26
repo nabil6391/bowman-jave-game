@@ -35,6 +35,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
     private int windowWidth;
     private int windowHeight;
     private int groundYPosition; // ground position
+    private int bgHeight;
     private PlayerEntity p1, p2;
 
 
@@ -68,7 +69,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         state.push(GameState.STARTUP);
 
         try {
-            img = ImageIO.read(new File("./src/sample.jpg"));
+            img = ImageIO.read(new File("./src/asset/cloud.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -252,7 +253,8 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         // draw land
         g.drawLine((int) cam.getX(), groundYPosition, (int) (cam.getX() + cam.getWidth()), groundYPosition);
 //        bufferedGraphics.show();
-        g.drawImage(img, 0, 0, gameWidth, gameHeight,null);
+        //bgHeight = gameHeight - groundYPosition;
+        g.drawImage(img, 0, 0, gameWidth, groundYPosition,null);
 //        g.drawImage(img, 0, 0, null);
 
         // renderBarControl entities
@@ -325,7 +327,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
 
         initShrubs();
-        initClouds();
+        //initClouds();
         initCamera();
         initPlayers();
         addMouseListener(this);
