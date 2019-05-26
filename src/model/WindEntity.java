@@ -8,15 +8,14 @@ import java.awt.*;
 public class WindEntity extends Entity {
 
     private float angle;
-    float pps, xSpeedCounter;
     private float power;
-
-    public WindEntity(float x, float y, int width, int height, float angle, float pps) {
+    double probability;
+    public WindEntity(float x, float y, int width, int height, float angle) {
         super(x, y, width, height);
         this.angle = angle;
         this.power = 1;
-        this.pps = pps;
-        this.xSpeedCounter = Math.abs(pps);
+
+        probability = Math.random() * 1000;
     }
 
     public float getAngle() {
@@ -26,21 +25,11 @@ public class WindEntity extends Entity {
 
     @Override
     public void tick() {
-        if (pps != 0) {
-            xSpeedCounter += Math.abs(pps);
-            if (xSpeedCounter >= 1) {
-                if (pps > 0) {
-//                    power++;
-//                    angle++;
-
-                } else if (pps < 0) {
-//                    power--;
-//                    angle--;
-
-                }
-                xSpeedCounter = pps;
-            }
+        if (probability < 1) {
+            power = (float) (Math.random() * 6);
+            angle = (float) (-Math.random() * 90);
         }
+        probability = Math.random() * 1000;
     }
 
     @Override

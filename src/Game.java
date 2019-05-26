@@ -320,9 +320,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         g.dispose();
     }
 
-    private void drawLand() {
-
-    }
 
     private void renderStartupMessage(Graphics2D g2d) {
         Color c = g2d.getColor();
@@ -367,10 +364,9 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
 
         initShrubs();
-        //initClouds();
         initCamera();
 
-        windEntity = new WindEntity(0, 0, 100, 100, 0,(float) (Math.random()) - 0.5f);
+        windEntity = new WindEntity(0, 0, 100, 100, -44);
         entities.add(windEntity);
         initPlayers();
 
@@ -398,20 +394,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         }
     }
 
-    private void initClouds() {
-        //Clouds; 20; random
-        float xPos, yPos;
-        int cw, ch;
-        for (int i = 0; i < 20; i++) {
-            xPos = (float) (Math.random() * (gameWidth - 400));
-            yPos = (float) (Math.random() * (gameHeight / 2)) + 200;
-            //cameraWidth = (int) (Math.random()*(160)) + 40;
-            cw = (int) (Math.random() * (60)) + 15;
-            //ch = (int) (Math.random()*(80)) + 20;
-            ch = 2 * cw / 3;
-            entities.add(new CloudEntity(xPos, yPos, cw, ch, (float) (Math.random()) - 0.5f));
-        }
-    }
 
     private void initPlayers() {
         p1 = new PlayerEntity(200, groundYPosition - 160, 60, 160, "Player 1");
@@ -439,13 +421,13 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
         String string = "FPS: " + lastFrames + "      [" + secondsSoFar + "] seconds   ("
                 + String.format("%.1f", cam.getX() + cam.getWidth() / 2) + "," + String.format("%.1f", (cam.getY() + cam.getHeight() / 2)) + ")"
-                + "      Wind (Power: " + windEntity.getPower() + " , Angle: " + windEntity.getAngle() + ")";
+                + "      Wind (Power: " + windEntity.getPower() + " , Angle: " + -windEntity.getAngle() + ")";
 //                + "      Arrow (" + (currentArrow != null ? currentArrow.toString() : "") + ")";
 
         // fps
         g2d.drawString(string, 5, windowHeight - 5);
 
-        g2d.drawString("Arrow (" + (currentArrow != null ? currentArrow.toString() : "") + ")", 5, windowHeight - 45);
+        g2d.drawString("" + (currentArrow != null ? currentArrow.toString() : "") + "", 5, windowHeight - 45);
 
 
         if (framesTime >= 1000000000) { // if a second has passed
@@ -588,21 +570,21 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
     public void mouseDragged(MouseEvent e) {
         if (e.getY() < windowHeight - 50) { // outside control bar
             if (state.peek() == GameState.P1ACTIVE || state.peek() == GameState.P2ACTIVE) {
-                PlayerEntity curr = p1;
+                PlayerEntity currentPlayer = p1;
                 int modifier = -1;
                 if (state.peek() == GameState.P2ACTIVE) {
-                    curr = p2;
+                    currentPlayer = p2;
                     modifier = 1;
                 }
                 if (mouseX - e.getX() > 0) {
-                    curr.setPower(curr.getPower() - modifier * 2f);
+                    currentPlayer.setPower(currentPlayer.getPower() - modifier * 2f);
                 } else if (mouseX - e.getX() < 0) {
-                    curr.setPower(curr.getPower() + modifier * 2f);
+                    currentPlayer.setPower(currentPlayer.getPower() + modifier * 2f);
                 }
                 if (mouseY - e.getY() > 0) { // maybe use the difference instead of 1
-                    curr.setAngle(curr.getAngle() + 1.5f);
+                    currentPlayer.setAngle(currentPlayer.getAngle() + 1.5f);
                 } else if (mouseY - e.getY() < 0) {
-                    curr.setAngle(curr.getAngle() - 1.5f);
+                    currentPlayer.setAngle(currentPlayer.getAngle() - 1.5f);
                 }
                 mouseX = e.getX();
                 mouseY = e.getY();

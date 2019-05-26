@@ -93,28 +93,28 @@ public class ArrowEntity extends Entity {
         //account for wind speed
         if (windEntity != null) {
             double windAngleRadians = Math.toRadians(windEntity.getAngle());
-            vy = (float) (vy + windEntity.getPower() * Math.sin(windAngleRadians));
+//            vy = (float) (vy + windEntity.getPower() * Math.sin(windAngleRadians));
+            initialVelocityY = (float) (vy + windEntity.getPower() * Math.sin(windAngleRadians));
             if (direction == Direction.RIGHT) {
                 vx = (float) (vx + windEntity.getPower() * Math.cos(windAngleRadians));
             } else {
                 vx = (float) (vx - windEntity.getPower() * Math.cos(windAngleRadians));
             }
         }
-        initialVelocityY = vy;
         this.vx = this.vx * 100 / 180; // px/ticks
     }
 
     @Override
     public String toString() {
-        return "ArrowEntity{" +
+        return "Arrow(" +
                 "initialPower=" + initialPower +
                 ", angle=" + angle +
-                ", angleInRadians=" + angleInRadians +
+//                ", angleInRadians=" + angleInRadians +
                 ", vx=" + vx +
                 ", vy=" + vy +
                 ", flightTime=" + flightTime +
                 ", direction=" + direction +
-                '}';
+                ')';
     }
 
     public float getVy() {
