@@ -5,9 +5,7 @@ import src.model.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
@@ -15,6 +13,7 @@ import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +70,30 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        // Keyboard controls
+        this.addKeyListener(new KeyListener() {
+            public void keyTyped(KeyEvent e) {
+            }
+
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_F1:
+//                        renderGameStopMessage(g);
+                        stop();
+                        break;
+                    case KeyEvent.VK_F2:
+                        state.push(GameState.STARTUP);
+                        init();
+                        start();
+                        break;
+                }
+            }
+
+            public void keyReleased(KeyEvent e) {
+            }
+        });
     }
     /**
      * Get the value of gameWidth
@@ -186,6 +209,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         //stop();
     }
 
+
     /**
      * the tick() method is sometimes called update(). This is where you do the
      * game calculations like moving objects.
@@ -209,11 +233,19 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
                 break;
             case GAMEOVER:
                 renderGameoverMessage(g);
+               // gameRestart();
                 break;
             default:
                 break;
         }
 
+    }
+
+    private void gameStop() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter an integer");
+        String s = in.nextLine();
+        System.out.println("You entered integer " + s);
     }
 
 
@@ -319,6 +351,14 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         g2d.drawString("Game Over", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
     }
 
+    private void renderGameStopMessage(Graphics2D g2d) {
+        Color c = g2d.getColor();
+        g2d.setColor(new Color(0.2f, 0.2f, 0.2f, 0.5f));
+        g2d.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
+        g2d.setColor(c);
+        g2d.drawString("Game Stopped. Press f2 play again. ", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
+    }
+
     WindEntity windEntity;
 
     private void init() {
@@ -350,10 +390,10 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         //shrubs; 20; random
         float xPos;
         int sw, sh;
-        for (int i = 0; i < 30; i++) {
-            xPos = (float) (Math.random() * (gameWidth - 400)) + 200;
-            sw = (int) (Math.random() * (10)) + 5;
-            sh = (int) (Math.random() * (40)) + 20;
+        for (int i = 0; i < 40; i++) {
+            xPos = (float) (Math.random() * (gameWidth)) + 400;
+            sw = (int) (Math.random() * (10)) + 25;
+            sh = (int) (Math.random() * (40)) + 30;
             entities.add(new ShrubEntity(xPos, (float) groundYPosition, sw, sh));
         }
     }
@@ -499,6 +539,9 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
             }
         }
     }
+
+
+
 
     @Override
     public void mousePressed(MouseEvent e) {

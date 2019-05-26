@@ -1,5 +1,8 @@
 package src;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  * Main class responsible for starting the game
  *
@@ -21,5 +24,8 @@ public class Bowman {
         Window window = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, game, TITLE);
         // start game
         game.start();
+
+
+
     }
 }

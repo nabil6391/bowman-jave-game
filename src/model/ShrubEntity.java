@@ -8,7 +8,7 @@ package src.model;
 import java.awt.*;
 
 /**
- * @author amh
+ * @author Nabil, Mahi, Shakil
  */
 public class ShrubEntity extends Entity {
     int[] xPoints;
