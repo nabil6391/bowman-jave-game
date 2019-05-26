@@ -21,6 +21,7 @@ public class PlayerEntity extends Entity implements Targetable {
     private String name;
     private boolean active;
     private ArrowEntity arrow;
+    private WindEntity windEntity;
     private Direction direction;
 
     public PlayerEntity(float x, float y, int width, int height, String name) {
@@ -99,9 +100,11 @@ public class PlayerEntity extends Entity implements Targetable {
         return arrow;
     }
 
-    public void setArrow(ArrowEntity arrow) {
+    public void setArrow(ArrowEntity arrow, WindEntity windEntity) {
         this.arrow = arrow;
+        this.windEntity = windEntity;
         this.arrow.setDirection(direction);
+        this.arrow.setWind(windEntity);
         arrow.setX(x + width + arrow.getWidth());
         arrow.setY(y + height / 3);
         arrow.setRotationFixedPoint(x + 15, y + 40);

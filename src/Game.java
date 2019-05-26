@@ -28,14 +28,12 @@ import java.util.logging.Logger;
  */
 public class Game extends Canvas implements Runnable, MouseListener, MouseMotionListener, ArrowStateListener {
 
-    int imgNumber = 0;
     BufferedImage img;
     private int gameWidth;
     private int gameHeight;
     private int windowWidth;
     private int windowHeight;
     private int groundYPosition; // ground position
-    private int bgHeight;
     private PlayerEntity p1, p2;
 
 
@@ -252,10 +250,10 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         g.setColor(Color.black);
         // draw land
         g.drawLine((int) cam.getX(), groundYPosition, (int) (cam.getX() + cam.getWidth()), groundYPosition);
-//        bufferedGraphics.show();
-        //bgHeight = gameHeight - groundYPosition;
+
+
+        //draw bg image
         g.drawImage(img, 0, 0, gameWidth, groundYPosition,null);
-//        g.drawImage(img, 0, 0, null);
 
         // renderBarControl entities
         for (int i = 0; i < entities.size(); i++) {
@@ -321,6 +319,8 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         g2d.drawString("Game Over", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
     }
 
+    WindEntity windEntity;
+
     private void init() {
         entities = new ArrayList<>();
 
@@ -329,7 +329,12 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         initShrubs();
         //initClouds();
         initCamera();
+
+        windEntity = new WindEntity(0, 0, 100, 100, -45,(float) (Math.random()) - 0.5f);
+        entities.add(windEntity);
         initPlayers();
+
+
         addMouseListener(this);
         addMouseMotionListener(this);
     }
@@ -372,6 +377,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         p1 = new PlayerEntity(200, groundYPosition - 160, 60, 160, "Player 1");
         p2 = new PlayerEntity((float) (Math.random() * (gameWidth - 1500) + 1000), groundYPosition - 160, 60, 160, "Player 2");
         p2.setDirection(Direction.LEFT);
+
         entities.add(p1);
         entities.add(p2);
         targets = new ArrayList<>();
@@ -392,7 +398,10 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         renderPlayerStats(g2d, p2, 200, 10, x2, padding);
 
         // fps
-        g2d.drawString("FPS: " + lastFrames + "      [" + secondsSoFar + "] seconds   <" + (cam.getX() + cam.getWidth() / 2) + " | " + (cam.getY() + cam.getHeight() / 2) + ">", 5, windowHeight - 5);
+        g2d.drawString("FPS: " + lastFrames + "      [" + secondsSoFar + "] seconds   (" + (cam.getX() + cam.getWidth() / 2) + "," + (cam.getY() + cam.getHeight() / 2) + ")" + "      Wind (Angle: " + windEntity.getAngle() + ")", 5, windowHeight - 5);
+
+
+
         if (framesTime >= 1000000000) { // if a second has passed
             lastFrames = frames;
             frames = 0;
@@ -460,10 +469,10 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
     private void prepareArrow(PlayerEntity player) {
         makeThePreviouseArrowGreen();
-        currentArrow = new ArrowEntity(400, gameHeight - 60, player.getAngle(), -45, groundYPosition, targets, true);
+        currentArrow = new ArrowEntity(400, gameHeight - 60,  groundYPosition, targets, true);
         currentArrow.addStateListener(this);
         entities.add(currentArrow);
-        player.setArrow(currentArrow);
+        player.setArrow(currentArrow, windEntity);
         cam.tick(player);
 
 

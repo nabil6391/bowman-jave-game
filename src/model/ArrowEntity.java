@@ -45,11 +45,10 @@ public class ArrowEntity extends Entity {
     private ArrayList<ArrowStateListener> arrowStateListeners;
     private ArrayList<Targetable> targets;
     private int rotationPointX, rotationPointY;
-    private Graphics2D g2d;
+    private WindEntity windEntity;
 
-    public ArrowEntity(float x, float y, float initialVelocity, float angle, int yLand, ArrayList<Targetable> targets, boolean isArrow) {
+    public ArrowEntity(float x, float y, int yLand, ArrayList<Targetable> targets, boolean isArrow) {
         super(x, y, 80, 1, isArrow); // fixed arrow width and height
-        this.initialVelocity = initialVelocity; // m/s
         this.angle = 0;
         this.flightTime = 0;
         this.yLand = yLand;
@@ -314,4 +313,8 @@ public class ArrowEntity extends Entity {
         }
     }
 
+    public void setWind(WindEntity windEntity) {
+
+        this.windEntity = windEntity;
+    }
 }
