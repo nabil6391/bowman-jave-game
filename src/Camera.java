@@ -32,7 +32,7 @@ public class Camera implements MouseListener, MouseMotionListener {
         cameraWidth = 10;
         barHeight = 6;
         barWidth = game.getGameWidth() / 10;
-        margin = 20;
+        margin = 10;
     }
 
     public float getX() {
@@ -98,7 +98,7 @@ public class Camera implements MouseListener, MouseMotionListener {
     }
 
     private boolean onBar(int x, int y) {
-        return (x >= width - barWidth - margin -50  && x <= width - margin -50)
+        return (x >= width - barWidth - margin - 50 && x <= width - margin -50)
                 && (y >= height - barHeight - margin && y <= height - margin);
     }
 

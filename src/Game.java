@@ -57,7 +57,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
     private int secondsSoFar = 0;
     private int mouseX;
     private int mouseY;
-    private boolean gameover = false;
 
     public Game(int width, int height) {
         gameWidth = 5000;
@@ -67,8 +66,13 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         groundYPosition = gameHeight - 80;
         state = new Stack<>();
         state.push(GameState.STARTUP);
-    }
 
+        try {
+            img = ImageIO.read(new File("./src/sample.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Get the value of gameWidth
      *
@@ -213,21 +217,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
     }
 
-    public void drawSkeletonAnimation() {
-
-        imgNumber %= 8; //whatever happened it would be from 0-7
-        try {
-            img = ImageIO.read(new File("./skeleton" + imgNumber + ".gif"));
-            imgNumber++;
-            g.drawImage(img, (int) cam.getX() + cam.getWidth() / 2, (int) cam.getY() + cam.getHeight() / 2, null);
-            g.setColor(Color.green);
-            g.fillRect((int) cam.getX() * 2, (int) cam.getY() / 2, 3000, 3000);
-            System.out.println("image drawn sucessfully at " + cam.getX() + " " + cam.getY());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-    }
 
     /**
      * the renderBarControl() method is where you do all your drawing to the
@@ -242,6 +231,11 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         }
         g = (Graphics2D) bufferedGraphics.getDrawGraphics();
 
+
+
+
+
+
         // ---------------start drawing things----------------------
         g.translate(-cam.getX(), -cam.getY()); // follow cam
 
@@ -252,10 +246,14 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
 //        g.setColor(new Color(1f, 1f, 1f, 1f));
 //        g.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
+//        bufferedGraphics.show();
 
         g.setColor(Color.black);
         // draw land
         g.drawLine((int) cam.getX(), groundYPosition, (int) (cam.getX() + cam.getWidth()), groundYPosition);
+//        bufferedGraphics.show();
+        g.drawImage(img, 0, 0, gameWidth, gameHeight,null);
+//        g.drawImage(img, 0, 0, null);
 
         // renderBarControl entities
         for (int i = 0; i < entities.size(); i++) {
@@ -264,6 +262,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
                 getEntity.render(g);
             }
         }
+
 
         switch (state.peek()) {
             case STARTUP:
@@ -344,7 +343,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         //shrubs; 20; random
         float xPos;
         int sw, sh;
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 30; i++) {
             xPos = (float) (Math.random() * (gameWidth - 400)) + 200;
             sw = (int) (Math.random() * (10)) + 5;
             sh = (int) (Math.random() * (40)) + 20;

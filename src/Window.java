@@ -27,13 +27,13 @@ public class Window {
         JFrame window = new JFrame(title); // create window
 
         // background image add to the window jframe
-        JPanel p = new JPanel();
-        ImageIcon i = new ImageIcon("D:/personal/programming/java/Bowman/src/sample.jpg");
-        JLabel l = new JLabel();
-        l.setIcon(i);
-        p.add(l);
-
-        window.add(p);
+//        JPanel p = new JPanel();
+//        ImageIcon i = new ImageIcon("./src/sample.jpg");
+//        JLabel l = new JLabel();
+//        l.setIcon(i);
+//        p.add(l);
+//
+//        window.add(p);
 
         window.add(game); // add game component to window
         window.pack();  // recalculate dimensions, in order for everything to appear correctly
