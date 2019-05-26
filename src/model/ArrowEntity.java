@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * @author a-haydar
+ * @author nabil
  */
 public class ArrowEntity extends Entity {
 

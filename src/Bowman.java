@@ -3,7 +3,7 @@ package src;
 /**
  * Main class responsible for starting the game
  *
- * @author a-haydar
+ * @author nabil
  */
 public class Bowman {
 

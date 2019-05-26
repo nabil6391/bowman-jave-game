@@ -6,7 +6,7 @@
 package src;
 
 /**
- * @author a-haydar
+ * @author nabil
  */
 public interface Targetable {
     /**

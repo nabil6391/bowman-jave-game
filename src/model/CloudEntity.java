@@ -3,7 +3,7 @@ package src.model;
 import java.awt.*;
 
 /**
- * @author a-haydar
+ * @author nabil
  */
 public class CloudEntity extends Entity {
 
