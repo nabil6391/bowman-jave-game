@@ -330,7 +330,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         //initClouds();
         initCamera();
 
-        windEntity = new WindEntity(0, 0, 100, 100, -45,(float) (Math.random()) - 0.5f);
+        windEntity = new WindEntity(0, 0, 100, 100, 0,(float) (Math.random()) - 0.5f);
         entities.add(windEntity);
         initPlayers();
 
@@ -397,9 +397,15 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         int x2 = windowWidth - 200 - padding;
         renderPlayerStats(g2d, p2, 200, 10, x2, padding);
 
-        // fps
-        g2d.drawString("FPS: " + lastFrames + "      [" + secondsSoFar + "] seconds   (" + (cam.getX() + cam.getWidth() / 2) + "," + (cam.getY() + cam.getHeight() / 2) + ")" + "      Wind (Angle: " + windEntity.getAngle() + ")", 5, windowHeight - 5);
+        String string = "FPS: " + lastFrames + "      [" + secondsSoFar + "] seconds   ("
+                + String.format("%.1f", cam.getX() + cam.getWidth() / 2) + "," + String.format("%.1f", (cam.getY() + cam.getHeight() / 2)) + ")"
+                + "      Wind (Power: " + windEntity.getPower() + " , Angle: " + windEntity.getAngle() + ")";
+//                + "      Arrow (" + (currentArrow != null ? currentArrow.toString() : "") + ")";
 
+        // fps
+        g2d.drawString(string, 5, windowHeight - 5);
+
+        g2d.drawString("Arrow (" + (currentArrow != null ? currentArrow.toString() : "") + ")", 5, windowHeight - 45);
 
 
         if (framesTime >= 1000000000) { // if a second has passed

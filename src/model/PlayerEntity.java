@@ -77,7 +77,7 @@ public class PlayerEntity extends Entity implements Targetable {
         } else {
             this.power = 100;
         }
-        arrow.setInitialVelocity(power);
+        arrow.setInitialPower(power);
     }
 
     public String getName() {

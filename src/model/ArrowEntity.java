@@ -32,7 +32,7 @@ public class ArrowEntity extends Entity {
     BufferedImage img2;
     float locationOfDrop = 1;//sequence of image for the blood dropping
     int flip = 1;
-    private float initialVelocity;
+    private float initialPower;
     private float angle;
     private float angleInRadians;
     private float vx;
@@ -82,21 +82,52 @@ public class ArrowEntity extends Entity {
         this.color = color;
     }
 
+    float initialVelocityY = 0;
+
     private void setup() {
         this.angleInRadians = (float) Math.toRadians(angle);
-        this.vx = (float) (initialVelocity * Math.cos(angleInRadians)); // m/s
-        this.vx = this.vx * 100 / 180; // px/ticks
-        this.vy = (float) (initialVelocity * Math.sin(angleInRadians));
+        this.vx = (float) (initialPower * Math.cos(angleInRadians)); // m/s
+        this.vy = (float) (initialPower * Math.sin(angleInRadians));
         //System.out.println("x and y "+x+" "+y);
 
+        //account for wind speed
+        if (windEntity != null) {
+            double windAngleRadians = Math.toRadians(windEntity.getAngle());
+            vy = (float) (vy + windEntity.getPower() * Math.sin(windAngleRadians));
+            if (direction == Direction.RIGHT) {
+                vx = (float) (vx + windEntity.getPower() * Math.cos(windAngleRadians));
+            } else {
+                vx = (float) (vx - windEntity.getPower() * Math.cos(windAngleRadians));
+            }
+        }
+        initialVelocityY = vy;
+        this.vx = this.vx * 100 / 180; // px/ticks
     }
 
-    public float getInitialVelocity() {
-        return initialVelocity;
+    @Override
+    public String toString() {
+        return "ArrowEntity{" +
+                "initialPower=" + initialPower +
+                ", angle=" + angle +
+                ", angleInRadians=" + angleInRadians +
+                ", vx=" + vx +
+                ", vy=" + vy +
+                ", flightTime=" + flightTime +
+                ", direction=" + direction +
+                '}';
     }
 
-    public void setInitialVelocity(float initialVelocity) {
-        this.initialVelocity = initialVelocity * 22 / 100; // full power = 22
+    public float getVy() {
+        return vy;
+    }
+
+    public float getVx() {
+        return vx;
+    }
+
+
+    public void setInitialPower(float initialPower) {
+        this.initialPower = initialPower * 22 / 100; // full power = 22
         setup();
     }
 
@@ -123,11 +154,10 @@ public class ArrowEntity extends Entity {
             // time
             flightTime++;
             // speeds: vx constant (ignoring .. stuff), and vy =
-            vy = (float) (initialVelocity * Math.sin(angleInRadians) + 9.8 * flightTime / 180); // in m/s
+            vy = (float) (initialVelocityY + 9.8 * flightTime / 180); // in m/s
             vy = vy * 100 / 180; // in px/ticks
 
-            // check for land (commented lines allow arrow to stop
-            // more accurately on land)
+            // check for land
             if ((y + vy) >= yLand - 10) {
                 stopped = true;
                 y = yLand - 10;
