@@ -1,13 +1,9 @@
 package src;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * This class just creates the main window for the game
@@ -23,24 +19,11 @@ public class Window {
         game.setMaximumSize(dimension);
         game.setMinimumSize(dimension);
 
-
         JFrame window = new JFrame(title); // create window
-
-        // background image add to the window jframe
-//        JPanel p = new JPanel();
-//        ImageIcon i = new ImageIcon("./src/sample.jpg");
-//        JLabel l = new JLabel();
-//        l.setIcon(i);
-//        p.add(l);
-//
-//        window.add(p);
 
         window.add(game); // add game component to window
         window.pack();  // recalculate dimensions, in order for everything to appear correctly
         window.setVisible(true); // default is not visible
-
-
-
 
         // closing window means terminating the program
         window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -53,8 +36,6 @@ public class Window {
             }
 
         });
-
-
 
 
         window.setResizable(false); // make window size fixed

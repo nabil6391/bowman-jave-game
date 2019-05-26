@@ -32,6 +32,7 @@ public class ArrowEntity extends Entity {
     BufferedImage img2;
     float locationOfDrop = 1;//sequence of image for the blood dropping
     int flip = 1;
+    float initialVelocityY = 0;
     private float initialPower;
     private float angle;
     private float angleInRadians;
@@ -81,8 +82,6 @@ public class ArrowEntity extends Entity {
     public void setColor(int color) {
         this.color = color;
     }
-
-    float initialVelocityY = 0;
 
     private void setup() {
         this.angleInRadians = (float) Math.toRadians(angle);

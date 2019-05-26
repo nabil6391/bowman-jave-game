@@ -7,9 +7,10 @@ import java.awt.*;
  */
 public class WindEntity extends Entity {
 
+    double probability;
     private float angle;
     private float power;
-    double probability;
+
     public WindEntity(float x, float y, int width, int height, float angle) {
         super(x, y, width, height);
         this.angle = angle;

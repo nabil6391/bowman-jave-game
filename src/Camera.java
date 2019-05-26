@@ -25,7 +25,7 @@ public class Camera implements MouseListener, MouseMotionListener {
     public Camera(Game game, float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
-        this.width = width +10;
+        this.width = width + 10;
         this.height = height + 10;
         this.game = game;
         cameraHeight = 14;
@@ -98,7 +98,7 @@ public class Camera implements MouseListener, MouseMotionListener {
     }
 
     private boolean onBar(int x, int y) {
-        return (x >= width - barWidth - margin - 50 && x <= width - margin -50)
+        return (x >= width - barWidth - margin - 50 && x <= width - margin - 50)
                 && (y >= height - barHeight - margin && y <= height - margin);
     }
 

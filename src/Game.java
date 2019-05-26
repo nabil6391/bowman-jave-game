@@ -3,17 +3,13 @@ package src;
 import src.model.*;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,17 +21,16 @@ import java.util.logging.Logger;
  *
  * @author nabil, mahi, shakil
  */
-public class Game extends Canvas implements Runnable, MouseListener, MouseMotionListener, ArrowStateListener {
+public class Game extends Canvas implements Runnable, MouseListener, KeyListener, MouseMotionListener, ArrowStateListener {
 
-    BufferedImage img;
+    private BufferedImage img;
     private int gameWidth;
     private int gameHeight;
     private int windowWidth;
     private int windowHeight;
     private int groundYPosition; // ground position
     private PlayerEntity p1, p2;
-
-
+    private WindEntity windEntity;
     private ArrowEntity currentArrow;
     private Stack<GameState> state;
     private boolean running = false;
@@ -72,29 +67,8 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         }
 
 
-        // Keyboard controls
-        this.addKeyListener(new KeyListener() {
-            public void keyTyped(KeyEvent e) {
-            }
-
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_F1:
-//                        renderGameStopMessage(g);
-                        stop();
-                        break;
-                    case KeyEvent.VK_F2:
-                        state.push(GameState.STARTUP);
-                        init();
-                        start();
-                        break;
-                }
-            }
-
-            public void keyReleased(KeyEvent e) {
-            }
-        });
     }
+
     /**
      * Get the value of gameWidth
      *
@@ -209,7 +183,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         //stop();
     }
 
-
     /**
      * the tick() method is sometimes called update(). This is where you do the
      * game calculations like moving objects.
@@ -233,21 +206,13 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
                 break;
             case GAMEOVER:
                 renderGameoverMessage(g);
-               // gameRestart();
+                // gameRestart();
                 break;
             default:
                 break;
         }
 
     }
-
-    private void gameStop() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Enter an integer");
-        String s = in.nextLine();
-        System.out.println("You entered integer " + s);
-    }
-
 
     /**
      * the renderBarControl() method is where you do all your drawing to the
@@ -280,7 +245,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
 
         //draw bg image
-        g.drawImage(img, 0, 0, gameWidth, groundYPosition,null);
+        g.drawImage(img, 0, 0, gameWidth, groundYPosition, null);
 
         // renderBarControl entities
         for (int i = 0; i < entities.size(); i++) {
@@ -315,7 +280,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         g.dispose();
     }
 
-
     private void renderStartupMessage(Graphics2D g2d) {
         Color c = g2d.getColor();
         g2d.setColor(new Color(0.2f, 0.2f, 0.2f, 0.5f));
@@ -323,16 +287,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         g2d.setBackground(Color.white);
         g2d.setColor(c);
         g2d.drawString("Assalamu Alaikum. Click any key  to start Game", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
-
-//        JFrame background = new JFrame(); // create window
-//        // background image add to the window jframe
-//        JPanel p = new JPanel();
-//        ImageIcon i = new ImageIcon("D:/personal/programming/java/Bowman/src/sample.jpg");
-//        JLabel l = new JLabel();
-//        l.setIcon(i);
-//        p.add(l);
-//        background.add(p);
-//        background.setVisible(true);
     }
 
     private void renderGameoverMessage(Graphics2D g2d) {
@@ -340,34 +294,22 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         g2d.setColor(new Color(0.2f, 0.2f, 0.2f, 0.5f));
         g2d.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
         g2d.setColor(c);
-        g2d.drawString("Game Over", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
+        g2d.drawString("Game Over. Press F2 to play again.", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
     }
-
-    private void renderGameStopMessage(Graphics2D g2d) {
-        Color c = g2d.getColor();
-        g2d.setColor(new Color(0.2f, 0.2f, 0.2f, 0.5f));
-        g2d.fillRect((int) cam.getX(), (int) cam.getY(), cam.getWidth(), cam.getHeight());
-        g2d.setColor(c);
-        g2d.drawString("Game Stopped. Press f2 play again. ", cam.getX() + cam.getWidth() / 2 - 80, cam.getY() + cam.getHeight() / 2);
-    }
-
-    WindEntity windEntity;
 
     private void init() {
         entities = new ArrayList<>();
 
-
-
         initShrubs();
         initCamera();
-
-        windEntity = new WindEntity(0, 0, 100, 100, -44);
+        windEntity = new WindEntity(0, 0, 0, 0, -44);
         entities.add(windEntity);
         initPlayers();
 
-
         addMouseListener(this);
         addMouseMotionListener(this);
+        // Keyboard controls
+        addKeyListener(this);
     }
 
     private void initCamera() {
@@ -416,7 +358,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
         String string = "FPS: " + lastFrames + "      [" + secondsSoFar + "] seconds   ("
                 + String.format("%.1f", cam.getX() + cam.getWidth() / 2) + "," + String.format("%.1f", (cam.getY() + cam.getHeight() / 2)) + ")"
-                + "      Wind (Power: " + String.format("%.1f",windEntity.getPower()) + " , Angle: " + String.format("%.1f",-windEntity.getAngle()) + ")";
+                + "      Wind (Power: " + String.format("%.1f", windEntity.getPower()) + " , Angle: " + String.format("%.1f", -windEntity.getAngle()) + ")";
 //                + "      Arrow (" + (currentArrow != null ? currentArrow.toString() : "") + ")";
 
         // fps
@@ -424,7 +366,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
         g2d.drawString("" + (currentArrow != null ? currentArrow.toString() : "") + "", 5, windowHeight - 45);
 
-        g2d.drawString("F2: Restart F1: Stop", windowWidth / 2 - padding, padding *3 );
+        g2d.drawString("F2: Restart F1: Stop", windowWidth / 2 - padding, padding * 3);
 
         if (framesTime >= 1000000000) { // if a second has passed
             lastFrames = frames;
@@ -493,7 +435,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
     private void prepareArrow(PlayerEntity player) {
         makeThePreviouseArrowGreen();
-        currentArrow = new ArrowEntity(400, gameHeight - 60,  groundYPosition, targets, true);
+        currentArrow = new ArrowEntity(400, gameHeight - 60, groundYPosition, targets, true);
         currentArrow.addStateListener(this);
         entities.add(currentArrow);
         player.setArrow(currentArrow, windEntity);
@@ -517,8 +459,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
             }
         }
     }
-
-
 
 
     @Override
@@ -594,32 +534,11 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
     @Override
     public void arrowHitTarget(Targetable target) {
-        //should be arrow away, so pop
-//        if (state.peek() == GameState.ARROWAWAY) {
-//            state.pop();
-//        }
         PlayerEntity p = (PlayerEntity) target;
         if (p.getHealth() <= 0) {
             state.push(GameState.GAMEOVER);
             System.out.println(p.getName() + " is out!");
         }
-//else {
-//            // wait a bit
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            if (p == p1) {
-//                prepareArrow(p2);
-//                state.pop();
-//                state.push(GameState.P2ACTIVE);
-//            } else {
-//                prepareArrow(p1);
-//                state.pop();
-//                state.push(GameState.P1ACTIVE);
-//            }
-//        }
     }
 
     @Override
@@ -649,6 +568,31 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
                 //System.out.println(state.toString());
                 break;
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_F1:
+//                        renderGameStopMessage(g);
+                stop();
+                break;
+            case KeyEvent.VK_F2:
+                state.push(GameState.STARTUP);
+                init();
+                start();
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 
     private enum GameState {
