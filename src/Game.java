@@ -262,11 +262,6 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
         }
         g = (Graphics2D) bufferedGraphics.getDrawGraphics();
 
-
-
-
-
-
         // ---------------start drawing things----------------------
         g.translate(-cam.getX(), -cam.getY()); // follow cam
 
@@ -421,7 +416,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
         String string = "FPS: " + lastFrames + "      [" + secondsSoFar + "] seconds   ("
                 + String.format("%.1f", cam.getX() + cam.getWidth() / 2) + "," + String.format("%.1f", (cam.getY() + cam.getHeight() / 2)) + ")"
-                + "      Wind (Power: " + windEntity.getPower() + " , Angle: " + -windEntity.getAngle() + ")";
+                + "      Wind (Power: " + String.format("%.1f",windEntity.getPower()) + " , Angle: " + String.format("%.1f",-windEntity.getAngle()) + ")";
 //                + "      Arrow (" + (currentArrow != null ? currentArrow.toString() : "") + ")";
 
         // fps
@@ -429,6 +424,7 @@ public class Game extends Canvas implements Runnable, MouseListener, MouseMotion
 
         g2d.drawString("" + (currentArrow != null ? currentArrow.toString() : "") + "", 5, windowHeight - 45);
 
+        g2d.drawString("F2: Restart F1: Stop", windowWidth / 2 - padding, padding *3 );
 
         if (framesTime >= 1000000000) { // if a second has passed
             lastFrames = frames;

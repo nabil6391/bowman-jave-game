@@ -108,7 +108,7 @@ public class ArrowEntity extends Entity {
     public String toString() {
         return "Arrow(" +
                 "initialPower=" + initialPower +
-                ", angle=" + angle +
+                ", angle=" + -angle +
 //                ", angleInRadians=" + angleInRadians +
                 ", vx=" + vx +
                 ", vy=" + vy +
